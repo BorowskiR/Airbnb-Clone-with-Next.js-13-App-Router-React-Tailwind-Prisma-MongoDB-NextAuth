@@ -1,15 +1,20 @@
 import { AiOutlineMenu } from 'react-icons/ai';
 import { Avatar } from '../Avatar';
-import { useCallback, useState } from 'react';
+import { Ref, useCallback, useRef, useState } from 'react';
 import { MenuItem } from './MenuItem';
 import { useRegisterModal } from '@/hooks/useRegisterModal';
+import { useOutsideClick } from '@/hooks/useOutsideClick';
 export const UserMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { onOpen } = useRegisterModal();
+  const ref = useRef<HTMLDivElement>(null);
 
   const toggleMenu = useCallback(() => {
     setIsOpen((prev) => !prev);
   }, []);
+
+  useOutsideClick(ref, toggleMenu);
+
   return (
     <div className="relative">
       <div className="flex flex-row items-center gap-3">
@@ -46,10 +51,13 @@ export const UserMenu = () => {
       </div>
 
       {isOpen && (
-        <div className="absolute rounded-xl shadow-md w-[40vw] md:w-3/4 bg-white overflow-hidden top-12 right-0 text-sm">
+        <div
+          ref={ref}
+          className="absolute rounded-xl shadow-md w-[40vw] md:w-3/4 bg-white overflow-hidden top-12 right-0 text-sm"
+        >
           <div className="flex flex-col cursor-pointer">
             <>
-              <MenuItem onClick={onOpen} label="Login" />
+              <MenuItem onClick={() => {}} label="Login" />
               <MenuItem onClick={onOpen} label="Sign up" />
             </>
           </div>
