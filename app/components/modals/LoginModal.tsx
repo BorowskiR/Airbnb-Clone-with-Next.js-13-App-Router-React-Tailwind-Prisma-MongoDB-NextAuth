@@ -2,7 +2,6 @@
 
 import { Modal } from './Modal';
 import { signIn } from 'next-auth/react';
-import axios from 'axios';
 import { AiFillGithub } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
 import { useCallback, useState } from 'react';
@@ -44,6 +43,7 @@ export const LoginModal = () => {
       if (res?.ok) {
         toast.success('Logged in');
         router.refresh();
+        loginModal.onClose();
       }
 
       if (res?.error) {
@@ -93,7 +93,7 @@ export const LoginModal = () => {
         outline
         label="Continue with Github"
         icon={AiFillGithub}
-        onClick={() => {}}
+        onClick={() => signIn('github')}
       />
       <div className="text-neutral-500 text-center mt-4 font-light">
         <div className="justify-center flex flex-row items-center gap-2">
