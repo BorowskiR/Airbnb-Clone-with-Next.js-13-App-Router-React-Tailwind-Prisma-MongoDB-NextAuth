@@ -17,8 +17,6 @@ export const CategoryBox: React.FC<CategoryProps> = ({
   const router = useRouter();
   const params = useSearchParams();
 
-  console.log(selected);
-
   const handleClick = useCallback(() => {
     let currentQuery = {};
 
@@ -30,8 +28,6 @@ export const CategoryBox: React.FC<CategoryProps> = ({
       ...currentQuery,
       category: label,
     };
-
-    console.log(updatedQuery);
 
     if (params?.get('category') === label) {
       delete updatedQuery.category;
