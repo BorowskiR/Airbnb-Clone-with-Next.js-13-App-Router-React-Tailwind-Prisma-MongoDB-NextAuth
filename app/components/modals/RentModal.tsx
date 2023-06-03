@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { FieldValues, useForm } from 'react-hook-form';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { Modal } from './Modal';
 import { useRentModal } from '@/hooks/useRentModal';
 import { Heading } from '../Heading';
@@ -10,6 +10,11 @@ import { CategoryInput } from '../inputs/CategoryInput';
 import { CountrySelect } from '../inputs/CountrySelect';
 import dynamic from 'next/dynamic';
 import { Counter } from '../inputs/Counter';
+import { ImageUpload } from '../inputs/ImageUpload';
+import { Input } from '../inputs/Input';
+import axios from 'axios';
+import { toast } from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 enum STEPS {
   CATEGORY = 0,
@@ -21,8 +26,10 @@ enum STEPS {
 }
 
 export const RentModal = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [step, setStep] = useState(STEPS.CATEGORY);
   const rentModal = useRentModal();
+  const router = useRouter();
 
   const {
     register,
@@ -50,7 +57,7 @@ export const RentModal = () => {
   const guestCount = watch('guestCount');
   const roomCount = watch('roomCount');
   const bathroomCount = watch('bathroomCount');
-  console.log(location);
+  const imageSrc = watch('imageSrc');
 
   const Map = useMemo(
     () =>
@@ -74,6 +81,28 @@ export const RentModal = () => {
 
   const onNext = () => {
     setStep((prev) => prev + 1);
+  };
+
+  const onSubmit: SubmitHandler<FieldValues> = (data: FieldValues) => {
+    if (step !== STEPS.PRICE) return onNext();
+
+    setIsLoading(true);
+
+    axios
+      .post('/api/listings', data)
+      .then(() => {
+        toast.success('Listing Created!');
+        router.refresh();
+        reset();
+        setStep(STEPS.CATEGORY);
+        rentModal.onClose();
+      })
+      .catch((error) => {
+        toast.error(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   const actionLabel = useMemo(() => {
@@ -158,9 +187,73 @@ export const RentModal = () => {
     );
   }
 
+  if (step === STEPS.IMAGES) {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <Heading
+          title="Add a photo of your place"
+          subtitle="Show guests what your place looks like!"
+        />
+        <ImageUpload
+          onChange={(value) => setCustomValue('imageSrc', value)}
+          value={imageSrc}
+        />
+      </div>
+    );
+  }
+
+  if (step === STEPS.DESCRIPTION) {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <Heading
+          title="How would you describe your place?"
+          subtitle="Short and sweet works best!"
+        />
+        <Input
+          id="title"
+          label="Title"
+          disabled={isLoading}
+          register={register}
+          errors={errors}
+          required
+        />
+        <hr />
+        <Input
+          id="description"
+          label="Description"
+          disabled={isLoading}
+          register={register}
+          errors={errors}
+          required
+        />
+      </div>
+    );
+  }
+
+  if (step === STEPS.PRICE) {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <Heading
+          title="Now set your price"
+          subtitle="How much do you charge per night?"
+        />
+        <Input
+          id="price"
+          label="Price"
+          formatPrice
+          type="number"
+          disabled={isLoading}
+          register={register}
+          errors={errors}
+          required
+        />
+      </div>
+    );
+  }
+
   return (
     <Modal
-      onSubmit={onNext}
+      onSubmit={handleSubmit(onSubmit)}
       onClose={rentModal.onClose}
       isOpen={rentModal.isOpen}
       actionLabel={actionLabel}
