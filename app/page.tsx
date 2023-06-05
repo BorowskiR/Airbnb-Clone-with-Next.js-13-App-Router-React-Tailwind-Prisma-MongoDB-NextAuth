@@ -5,6 +5,7 @@ import getListings from './actions/getListings';
 import { Container } from './components/Container';
 import { EmptyState } from './components/EmptyState';
 import { ListingItem } from './components/listings/ListingItem';
+import { SafeListings } from './types';
 
 export default async function Home() {
   const listings = await getListings();
@@ -27,7 +28,7 @@ export default async function Home() {
             2xl:grid-cols-6
             gap-8"
       >
-        {listings.map((listing: Listing) => {
+        {listings.map((listing: SafeListings) => {
           return (
             <ListingItem
               key={listing.id}

@@ -6,7 +6,6 @@ export const useOutsideClick = (
 ) => {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      console.log('click');
       if (ref.current && !ref.current.contains(event.target as Node)) {
         handleClose();
       }
