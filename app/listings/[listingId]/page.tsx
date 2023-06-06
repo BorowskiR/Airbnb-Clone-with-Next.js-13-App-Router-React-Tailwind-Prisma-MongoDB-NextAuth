@@ -1,7 +1,7 @@
 import getCurrentUser from '@/actions/getCurrentUser';
 import getListingById from '@/actions/getListingById';
 import { EmptyState } from '@/components/EmptyState';
-import { ListingClient } from './ListingClient';
+import ListingClient from './ListingClient';
 
 interface IParams {
   listingId: string;
