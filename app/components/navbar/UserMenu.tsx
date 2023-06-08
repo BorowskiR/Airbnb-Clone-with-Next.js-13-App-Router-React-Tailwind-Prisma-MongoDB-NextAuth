@@ -10,12 +10,14 @@ import { useOutsideClick } from '@/hooks/useOutsideClick';
 import { useRentModal } from '@/hooks/useRentModal';
 
 import { SafeUser } from '@/types';
+import { useRouter } from 'next/navigation';
 interface UserMenuProps {
   currentUser?: SafeUser | null;
 }
 
 export const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
   const registerModal = useRegisterModal();
   const rentModal = useRentModal();
   const loginModal = useLoginModal();
@@ -78,7 +80,12 @@ export const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
             <>
               {currentUser ? (
                 <>
-                  <MenuItem onClick={() => {}} label="My trips" />
+                  <MenuItem
+                    onClick={() => {
+                      router.push('/trips');
+                    }}
+                    label="My trips"
+                  />
                   <MenuItem onClick={() => {}} label="My favorites" />
                   <MenuItem onClick={() => {}} label="My reservations" />
                   <MenuItem onClick={() => {}} label="My properties" />
