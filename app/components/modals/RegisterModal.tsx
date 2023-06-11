@@ -38,6 +38,7 @@ export const RegisterModal = () => {
       .post('/api/register', data)
       .then(() => {
         registerModal.onClose();
+        loginModal.onOpen();
       })
       .catch((err) => {
         console.log(err);

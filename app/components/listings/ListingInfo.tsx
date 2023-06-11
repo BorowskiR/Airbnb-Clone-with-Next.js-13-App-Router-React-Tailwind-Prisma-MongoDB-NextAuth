@@ -20,6 +20,8 @@ interface ListingInfoProps {
   locationValue: string;
 }
 
+const Map = dynamic(() => import('../Map'), { ssr: false });
+
 export const ListingInfo: React.FC<ListingInfoProps> = ({
   user,
   description,
@@ -31,8 +33,6 @@ export const ListingInfo: React.FC<ListingInfoProps> = ({
 }) => {
   const { getByValue } = useCountries();
   const coordinates = getByValue(locationValue)?.latlng;
-
-  const Map = dynamic(() => import('../Map'), { ssr: false });
 
   return (
     <div className="col-span-4 flex flex-col gap-8">
