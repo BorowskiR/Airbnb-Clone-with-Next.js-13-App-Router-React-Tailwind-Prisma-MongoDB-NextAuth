@@ -7,9 +7,15 @@ import { EmptyState } from './components/EmptyState';
 import { ListingItem } from './components/listings/ListingItem';
 import { SafeListing } from './types';
 
-export default async function Home() {
-  const listings = await getListings();
+interface HomeProps {
+  searchParams: {
+    userId?: string;
+  };
+}
+
+export default async function Home({ searchParams }: HomeProps) {
   const currentUser = await getCurrentUser();
+  const listings = await getListings(searchParams);
 
   if (listings.length === 0) {
     return <EmptyState showReset />;
