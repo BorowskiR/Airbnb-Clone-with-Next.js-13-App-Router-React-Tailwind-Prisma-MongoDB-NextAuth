@@ -1,6 +1,5 @@
-import { Listing } from '@prisma/client';
 import getCurrentUser from './actions/getCurrentUser';
-import getListings from './actions/getListings';
+import getListings, { IListingsParams } from './actions/getListings';
 
 import { Container } from './components/Container';
 import { EmptyState } from './components/EmptyState';
@@ -8,9 +7,7 @@ import { ListingItem } from './components/listings/ListingItem';
 import { SafeListing } from './types';
 
 interface HomeProps {
-  searchParams: {
-    userId?: string;
-  };
+  searchParams: IListingsParams;
 }
 
 export default async function Home({ searchParams }: HomeProps) {

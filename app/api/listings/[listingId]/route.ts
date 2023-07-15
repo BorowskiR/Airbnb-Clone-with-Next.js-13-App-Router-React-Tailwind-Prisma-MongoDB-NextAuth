@@ -7,7 +7,10 @@ interface IParams {
   listingId?: string;
 }
 
-export async function DELETE(request: Request, params: IParams) {
+export async function DELETE(
+  request: Request,
+  { params }: { params: IParams }
+) {
   const currentUser = await getCurrentUser();
 
   if (!currentUser) {
@@ -17,10 +20,10 @@ export async function DELETE(request: Request, params: IParams) {
   const { listingId } = params;
 
   if (!listingId || typeof listingId !== 'string') {
-    return NextResponse.error();
+    throw new Error('Invalid ID');
   }
 
-  const listing = prisma.listing.deleteMany({
+  const listing = await prisma.listing.deleteMany({
     where: {
       id: listingId,
       userId: currentUser.id,

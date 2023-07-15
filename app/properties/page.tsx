@@ -1,6 +1,7 @@
 import getCurrentUser from '@/actions/getCurrentUser';
 import { EmptyState } from '@/components/EmptyState';
 import getListings from '@/actions/getListings';
+import { PropertiesClient } from './PropertiesClient';
 
 const PropertiesCopy = async () => {
   const currentUser = await getCurrentUser();
@@ -9,11 +10,11 @@ const PropertiesCopy = async () => {
     return <EmptyState title="Unauthorized" subtitle="Please login" />;
   }
 
-  const listing = await getListings({
+  const listings = await getListings({
     userId: currentUser.id,
   });
 
-  if (listing.length === 0) {
+  if (listings.length === 0) {
     return (
       <EmptyState
         title="No properties found"
@@ -22,7 +23,7 @@ const PropertiesCopy = async () => {
     );
   }
 
-  return <PropertiesClient listing={listing} currentUser={currentUser} />;
+  return <PropertiesClient listings={listings} currentUser={currentUser} />;
 };
 
 export default PropertiesCopy;

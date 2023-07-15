@@ -13,7 +13,7 @@ import { SafeListing, SafeUser } from '@/types';
 
 interface PropertiesClient {
   listings: SafeListing[];
-  currentUser: SafeUser;
+  currentUser?: SafeUser | null;
 }
 
 export const PropertiesClient: React.FC<PropertiesClient> = ({
@@ -54,7 +54,7 @@ export const PropertiesClient: React.FC<PropertiesClient> = ({
             actionId={listing.id}
             disabled={deletingId === listing.id}
             onAction={onCancel}
-            actionLabel="Delete properties"
+            actionLabel="Delete property"
             currentUser={currentUser}
           />
         ))}

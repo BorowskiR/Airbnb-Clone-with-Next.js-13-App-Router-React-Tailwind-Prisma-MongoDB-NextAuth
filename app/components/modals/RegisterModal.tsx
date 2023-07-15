@@ -39,6 +39,7 @@ export const RegisterModal = () => {
       .then(() => {
         registerModal.onClose();
         loginModal.onOpen();
+        toast.success('Your account is created!');
       })
       .catch((err) => {
         console.log(err);
