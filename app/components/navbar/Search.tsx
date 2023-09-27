@@ -1,15 +1,21 @@
 'use client';
 
+import { useSearchModal } from '@/hooks/useSearchModal';
 import { BiSearch } from 'react-icons/bi';
 
 export const Search = () => {
+  const searchModal = useSearchModal();
   return (
     <div
+      onClick={() => {
+        searchModal.onOpen();
+      }}
       className="
         border-[1px]
         w-full
         md:w-auto
         py-2
+        pr-2
         rounded-full
         shadow-sm
         hover:shadow-md
