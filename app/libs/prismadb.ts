@@ -19,7 +19,7 @@ if (typeof window === 'undefined') {
       // @ts-ignore
       global.prisma = new PrismaClient();
     }
-
+    // @ts-ignore
     prisma = global.prisma;
   }
 }
